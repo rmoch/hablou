@@ -9,6 +9,8 @@
     text-align: left;
     min-height:20px;
     line-height: 30px;
+    overflow-y: auto;
+
 }
 
 .tag {

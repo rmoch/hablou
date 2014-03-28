@@ -25,22 +25,24 @@
 
         $(document).on('keydown click', '.hablou-editor', function (event) {
             // Check if cursor is in tag
-            thiselement = window.getSelection().anchorNode.parentNode;
+            selection = window.getSelection();
+            element = selection.anchorNode.parentNode;
             $('.hablou-editor .tag').removeClass('selected');
             var code = event.keyCode || event.which;
-            if ($(thiselement).hasClass('tag') === true) {
-                $(thiselement).addClass('selected');
+            if ($(element).hasClass('tag') === true) {
+                $(element).addClass('selected');
                 // handle tag removal with backspace
                 if ((code == 8) || (code == 46)) { // Backspace - delete tag
                     event.preventDefault();
-                    $(thiselement).remove();
+                    $(element).remove();
                 }
             }
             if (code == 90 && event.ctrlKey) {
                 // Prevent CTRL+Z since tag cannot be handled
                 event.preventDefault();
             }
-        });
+            this.range = this.saveSelection();
+        }.bind(this));
 
         $(document).on('click', '.debug', function () {
             var html = $.parseHTML($('.hablou-editor').html());
@@ -61,6 +63,29 @@
             window.console.log(data);
         }
     };
+    Plugin.prototype.saveSelection = function() {
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                return sel.getRangeAt(0);
+            }
+        } else if (document.selection && document.selection.createRange) {
+            return document.selection.createRange();
+        }
+        return null;
+    };
+
+    Plugin.prototype.restoreSelection = function(range) {
+        if (range) {
+            if (window.getSelection) {
+                selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            } else if (document.selection && range.select) {
+                range.select();
+            }
+        }
+    }
     Plugin.prototype.tag = function(text, value) {
         // Use attr data-value instead of jquery .data() for persistence sake
         return $('<span>').addClass('tag').attr('contenteditable', false)
@@ -69,11 +94,11 @@
     };
 
     Plugin.prototype.insertTextAtCursor = function(text, value) {
-        var sel, range;
-        sel = window.getSelection();
-        // Prevent tag insertion if oustide the editable text area
-        if ($(sel.anchorNode).parents(".hablou-editor").html() !== undefined) {
-            range = sel.getRangeAt(0);
+        var selection, range;
+        if (this.range) {
+            this.restoreSelection(this.range);
+            selection = window.getSelection();
+            range = selection.getRangeAt(0);
             range.deleteContents();
             // Create the tag
             var textNode;
@@ -84,8 +109,8 @@
             }
             range.insertNode(textNode);
             range.setStartAfter(textNode);
-            sel.removeAllRanges();
-            sel.addRange(range);
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
     }
 
@@ -144,7 +169,6 @@
         }
         return output;
     }
-
 
     Plugin.prototype.initComposer = function(text) {
         var composer = $('.hablou-editor');

@@ -1,0 +1,26 @@
+.hablou-editor {
+    position:relative;
+    width: 100%;
+    height: 100%;
+    text-align: right;
+    border:1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: left;
+    min-height:20px;
+    line-height: 30px;
+}
+
+.tag {
+    background-color: rgba(197, 224, 180, 1);
+    padding:3px;
+    padding-left:7px;
+    padding-right:7px;
+    margin-right: 2px;
+    border: 1px solid rgb(112, 173, 71);
+    border-radius: 3px;
+}
+.tag.selected {
+    background-color: #3E7EBF;
+    color:white;
+}

@@ -88,9 +88,8 @@
     }
     Plugin.prototype.tag = function(text, value) {
         // Use attr data-value instead of jquery .data() for persistence sake
-        return $('<span>').addClass('tag').attr('contenteditable', false)
-            .attr('data-value', value)
-            .text(text);
+        var element = $('<span>').attr({'class': 'tag', 'contenteditable': false, 'data-value': value}).text(text);
+        return element;
     };
 
     Plugin.prototype.insertTextAtCursor = function(text, value) {

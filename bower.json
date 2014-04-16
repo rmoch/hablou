@@ -1,0 +1,24 @@
+{
+  "name": "hablou",
+  "main": "hablou.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/optiflows/hablou",
+  "authors": [
+    "Richard Moch <richard.moch@optiflows.com>"
+  ],
+  "description": "Hablou is a jQuery plugin basic text editor which visualy allow the insertion of tags in text for further replacement.",
+  "keywords": [
+    "jQuery",
+    "text",
+    "editor",
+    "html5"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
